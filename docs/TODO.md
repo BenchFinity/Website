@@ -20,7 +20,7 @@
 - [x] Add MDX, sitemap, robots, Playwright, and Lighthouse baseline.
 - [x] Add Workbench-style GitHub Actions CI, image scan, GHCR publish, and release scaffold.
 - [x] Run install, format check, lint, typecheck, build, and local HTTP smoke tests.
-- [ ] Run Playwright browser tests outside the current macOS sandbox.
+- [x] Run Playwright browser tests outside the current macOS sandbox via GitHub Actions.
 
 ## V1 Site Surface
 
@@ -45,7 +45,7 @@
 - [ ] Provide and verify real self-hosted PostHog endpoint and project token.
 - [x] Wire Discord destination.
 - [ ] Wire email capture destination once available.
-- [ ] Run Lighthouse outside the current macOS sandbox.
+- [x] Run Lighthouse outside the current macOS sandbox via GitHub Actions.
 - [x] Canonical metadata and OG/Twitter metadata helper.
 - [x] Noindex Examples/Models until real artifacts exist.
 - [x] Link footer colophon to the company methodology template.
@@ -54,12 +54,12 @@
 
 ## Blockers
 
+- Open launch issues are tracked in `docs/OPEN-ISSUES.md`.
 - Tailwind Plus source access is available from the founder but not yet connected to this repo.
 - DNS and hosting details are available from the founder but not yet captured in repo config.
 - PostHog endpoint and project key are not available yet, so analytics code is present but inactive unless configured and consented.
 - Email capture destination is not available yet.
 - Local `../Website-CD` checkout has `develop` checked out, but sandbox permissions blocked writing upstream metadata after the push. GitHub default branch and remote `develop` are correct.
 - Website-CD deploy manifests are still pending DNS, hosting, and cluster path details, but the Website repo now publishes `ghcr.io/benchfinity/website` images using the Workbench branch/tag convention.
-- Playwright tests are configured but Chromium cannot launch in this sandbox. It fails at macOS Mach port registration before test code runs.
-- Lighthouse is configured for the representative route set but Chrome for Testing also fails to launch cleanly in this sandbox.
+- Local browser verification is still blocked by the macOS sandbox, but GitHub Actions successfully runs Playwright and Lighthouse.
 - Production audit currently reports the Next 16.2.6 transitive PostCSS advisory. `npm view next version` reports 16.2.6 as latest, and npm's forced audit fix would downgrade Next to 9.3.3, so no safe package fix is available at this point.
