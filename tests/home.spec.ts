@@ -17,12 +17,14 @@ test("renders the Benchfinity home page with the locked headline", async ({
     ),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Build something now" }),
+    page.getByRole("link", { name: "Build something now" }).first(),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", {
-      name: "Create an account and build entire systems",
-    }),
+    page
+      .getByRole("link", {
+        name: "Create an account and build entire systems",
+      })
+      .first(),
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: "Explore Examples" }),
