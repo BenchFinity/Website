@@ -26,8 +26,8 @@ token and host are configured.
 
 ## Container Images
 
-CI publishes multi-arch images to GitHub Container Registry at
-`ghcr.io/benchfinity/website`.
+CI publishes amd64 images to GitHub Container Registry at
+`ghcr.io/benchfinity/website` for the internal Kubernetes cluster.
 
 ```bash
 docker build -t benchfinity-website .

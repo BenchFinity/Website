@@ -50,7 +50,7 @@
 - [x] Noindex Examples/Models until real artifacts exist.
 - [x] Link footer colophon to the company methodology template.
 - [x] Wire MDX components and pretty-code runtime options.
-- [x] Publish proper multi-arch Website image through GHCR on push.
+- [x] Publish proper amd64 Website image through GHCR on push.
 
 ## Blockers
 
