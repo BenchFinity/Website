@@ -18,9 +18,9 @@ export default function Home() {
     <main className="bg-bf-bg text-bf-text overflow-hidden">
       <section className="relative isolate">
         <div
-          className="absolute inset-0 -z-10 opacity-20"
+          className="absolute inset-0 -z-10 hidden opacity-20 lg:block"
           style={{
-            backgroundImage: "url('/media/wallpapers/baseplate-1920x1080.png')",
+            backgroundImage: "url('/media/wallpapers/baseplate-1280x720.webp')",
             backgroundPosition: "center",
             backgroundSize: "cover",
           }}
