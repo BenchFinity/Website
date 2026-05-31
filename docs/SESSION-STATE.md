@@ -35,3 +35,5 @@ CI closeout: run `26715464536` passed on commit `5d94e6a94d626a52eac58675319b0ea
 Image closeout: GHCR published `ghcr.io/benchfinity/website:0.1.0-website-build-foundation-5d94e6a-SNAPSHOT` with digest `sha256:eefee1ba1b900d747a73c2fa9bcb5533aded5124b0e24631bfe2a11f7f3ae682`. The Docker job log confirms `platforms: linux/amd64`; QEMU and arm64 publish support were intentionally removed because the site only runs on the internal Kubernetes cluster.
 
 Launch closeout: open launch inputs and deferred engineering work are tracked in `docs/OPEN-ISSUES.md`. The Website repository launch foundation is complete; production deployment still depends on Website-CD manifests after DNS, ingress, TLS, namespace, and cluster conventions are confirmed.
+
+Release follow-up: PR #3 added `USER node` to the runner stage so the image satisfies restricted Kubernetes `runAsNonRoot` policy. Package version was advanced to `0.1.1` for the corrected production publish instead of reusing the existing `v0.1.0` release tag.
