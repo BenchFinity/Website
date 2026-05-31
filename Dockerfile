@@ -27,6 +27,11 @@ COPY --chown=node:node --from=builder /app/.next/standalone ./
 COPY --chown=node:node --from=builder /app/.next/static ./.next/static
 COPY --chown=node:node --from=builder /app/public ./public
 
+# Run as the nonroot 'node' user so the image satisfies the cluster's
+# restricted PodSecurity (runAsNonRoot) without the deployment pinning a UID.
+# The -dev base image otherwise defaults to root.
+USER node
+
 EXPOSE 3000
 
 ENTRYPOINT ["node"]
