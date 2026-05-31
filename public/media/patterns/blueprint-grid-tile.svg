@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Benchfinity blueprint grid tile">
+  <rect width="64" height="64" fill="#0B0D0F"/>
+  <g stroke="#171C22" stroke-width="0.75" fill="none">
+    <path d="M16 0V64M32 0V64M48 0V64M0 16H64M0 32H64M0 48H64"/>
+  </g>
+  <path d="M64 0H0V64" fill="none" stroke="#232A31" stroke-width="1"/>
+</svg>

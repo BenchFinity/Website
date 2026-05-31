@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+:root {
+  --bf-bg: #0b0d0f;
+  --bf-surface: #161b20;
+  --bf-surface-2: #1e242b;
+  --bf-border: #232a31;
+  --bf-accent: #4fa39d;
+  --bf-accent-bright: #67c7be;
+  --bf-accent-hover: #67c7be;
+  --bf-accent-press: #3e837e;
+  --bf-text: #e7ecef;
+  --bf-text-muted: #8d98a1;
+  --bf-focus: #67c7be;
+  --bf-signal: #e0a458;
+  --bf-signal-press: #c98a3f;
+  --bf-success: #5fa873;
+  --bf-warning: #e0a458;
+  --bf-error: #cd6457;
+  --bf-info: #6e8fb5;
+}
+
+@theme inline {
+  --color-bf-bg: var(--bf-bg);
+  --color-bf-surface: var(--bf-surface);
+  --color-bf-surface-2: var(--bf-surface-2);
+  --color-bf-border: var(--bf-border);
+  --color-bf-accent: var(--bf-accent);
+  --color-bf-accent-bright: var(--bf-accent-bright);
+  --color-bf-accent-hover: var(--bf-accent-hover);
+  --color-bf-accent-press: var(--bf-accent-press);
+  --color-bf-text: var(--bf-text);
+  --color-bf-text-muted: var(--bf-text-muted);
+  --color-bf-focus: var(--bf-focus);
+  --color-bf-signal: var(--bf-signal);
+  --color-bf-signal-press: var(--bf-signal-press);
+  --color-bf-success: var(--bf-success);
+  --color-bf-warning: var(--bf-warning);
+  --color-bf-error: var(--bf-error);
+  --color-bf-info: var(--bf-info);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bf-bg);
+  color: var(--bf-text);
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+}
+
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--bf-accent) 35%, transparent);
+  color: var(--bf-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--bf-focus);
+  outline-offset: 3px;
+}
+
+[data-rehype-pretty-code-figure] {
+  margin-top: 1.5rem;
+}
+
+[data-rehype-pretty-code-figure] pre {
+  background: var(--bf-surface);
+}
+
+[data-line] {
+  display: block;
+}
