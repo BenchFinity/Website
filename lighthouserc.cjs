@@ -20,6 +20,9 @@ module.exports = {
       startServerCommand: `HOSTNAME=127.0.0.1 PORT=${port} npm run start`,
       startServerReadyPattern: "Ready",
       numberOfRuns: 1,
+      settings: {
+        chromeFlags: "--no-sandbox --disable-dev-shm-usage",
+      },
     },
     assert: {
       preset: "lighthouse:recommended",
