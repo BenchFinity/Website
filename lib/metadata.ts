@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 
+type OpenGraphType = "website" | "article";
+
 type MetadataInput = {
   title?: string;
   description?: string;
   path?: string;
   noIndex?: boolean;
+  type?: OpenGraphType;
+  publishedTime?: string;
 };
 
 export function absoluteUrl(path = "/") {
@@ -17,6 +21,8 @@ export function createPageMetadata({
   description = siteConfig.description,
   path = "/",
   noIndex = false,
+  type = "website",
+  publishedTime,
 }: MetadataInput = {}): Metadata {
   const url = absoluteUrl(path);
   const resolvedTitle =
@@ -29,7 +35,8 @@ export function createPageMetadata({
       canonical: url,
     },
     openGraph: {
-      type: "website",
+      type,
+      ...(type === "article" && publishedTime ? { publishedTime } : {}),
       url,
       siteName: siteConfig.name,
       title: resolvedTitle,
