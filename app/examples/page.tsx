@@ -1,4 +1,5 @@
-import { CtaRow } from "@/components/cta-row";
+import { Card } from "@/components/card";
+import { ClosingCta } from "@/components/closing-cta";
 import { PageHeader } from "@/components/page-header";
 import { StatusPill } from "@/components/status-pill";
 import { createPageMetadata } from "@/lib/metadata";
@@ -43,7 +44,7 @@ const surfaces = [
 
 export default function ExamplesPage() {
   return (
-    <main className="bg-bf-bg text-bf-text">
+    <main id="main-content" tabIndex={-1} className="bg-bf-bg text-bf-text">
       <section className="px-6 py-20 sm:px-8 lg:px-12">
         <PageHeader
           eyebrow="Examples and models"
@@ -55,14 +56,11 @@ export default function ExamplesPage() {
       <section className="mx-auto max-w-7xl px-6 pb-20 sm:px-8 lg:px-12">
         <div className="grid gap-4 md:grid-cols-2">
           {exampleSlots.map((slot) => (
-            <article
-              key={slot.title}
-              className="border-bf-border bg-bf-surface border p-6"
-            >
+            <Card key={slot.title}>
               <StatusPill tone="roadmap">{slot.status}</StatusPill>
               <h2 className="mt-5 text-2xl font-semibold">{slot.title}</h2>
               <p className="text-bf-text-muted mt-4 leading-7">{slot.body}</p>
-            </article>
+            </Card>
           ))}
         </div>
       </section>
@@ -88,18 +86,10 @@ export default function ExamplesPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-6 py-20 text-center sm:px-8 lg:px-12">
-        <h2 className="text-3xl font-semibold sm:text-4xl">
-          Start from a baseplate while the model library fills in.
-        </h2>
-        <p className="text-bf-text-muted mx-auto mt-5 max-w-2xl leading-7">
-          The examples page is part of v1 because it is the future discovery
-          surface. The individual model links wait for real printed evidence.
-        </p>
-        <div className="mt-8">
-          <CtaRow align="center" />
-        </div>
-      </section>
+      <ClosingCta
+        heading="Start from a baseplate while the model library fills in."
+        body="The examples page is part of v1 because it is the future discovery surface. The individual model links wait for real printed evidence."
+      />
     </main>
   );
 }

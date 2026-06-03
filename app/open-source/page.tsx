@@ -1,4 +1,5 @@
-import { CtaRow } from "@/components/cta-row";
+import { Card } from "@/components/card";
+import { ClosingCta } from "@/components/closing-cta";
 import { PageHeader } from "@/components/page-header";
 import { StatusPill } from "@/components/status-pill";
 import { TrackedLink } from "@/components/tracked-link";
@@ -21,7 +22,7 @@ const contributionSteps = [
 
 export default function OpenSourcePage() {
   return (
-    <main className="bg-bf-bg text-bf-text">
+    <main id="main-content" tabIndex={-1} className="bg-bf-bg text-bf-text">
       <section className="px-6 py-20 sm:px-8 lg:px-12">
         <PageHeader
           eyebrow="Open source"
@@ -31,15 +32,15 @@ export default function OpenSourcePage() {
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-4 px-6 pb-20 sm:px-8 lg:grid-cols-3 lg:px-12">
-        <article className="border-bf-border bg-bf-surface border p-6">
+        <Card>
           <StatusPill tone="live">License</StatusPill>
           <h2 className="mt-5 text-2xl font-semibold">AGPL-3.0</h2>
           <p className="text-bf-text-muted mt-4 leading-7">
             Workbench ships AGPL-3.0 and intends to stay that way. The license
             covers the software, not the ordinary output you generate with it.
           </p>
-        </article>
-        <article className="border-bf-border bg-bf-surface border p-6">
+        </Card>
+        <Card>
           <StatusPill tone="live">Output rights</StatusPill>
           <h2 className="mt-5 text-2xl font-semibold">
             Your generated designs are yours.
@@ -47,8 +48,8 @@ export default function OpenSourcePage() {
           <p className="text-bf-text-muted mt-4 leading-7">
             The designs you generate are yours to use, share, sell, or print.
           </p>
-        </article>
-        <article className="border-bf-border bg-bf-surface border p-6">
+        </Card>
+        <Card>
           <StatusPill tone="neutral">Contributions</StatusPill>
           <h2 className="mt-5 text-2xl font-semibold">One-time CLA</h2>
           <p className="text-bf-text-muted mt-4 leading-7">
@@ -56,7 +57,7 @@ export default function OpenSourcePage() {
             use and relicense contributions. The bot handles this on the first
             pull request.
           </p>
-        </article>
+        </Card>
       </section>
 
       <section className="border-bf-border bg-bf-surface/40 border-y">
@@ -128,18 +129,11 @@ export default function OpenSourcePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-6 pb-20 text-center sm:px-8 lg:px-12">
-        <h2 className="text-3xl font-semibold sm:text-4xl">
-          Build with it first.
-        </h2>
-        <p className="text-bf-text-muted mx-auto mt-5 max-w-2xl leading-7">
-          Contribution starts with a printed part, a fit report, or a clear bug.
-          Code is one path, not the only path.
-        </p>
-        <div className="mt-8">
-          <CtaRow align="center" />
-        </div>
-      </section>
+      <ClosingCta
+        heading="Build with it first."
+        body="Contribution starts with a printed part, a fit report, or a clear bug. Code is one path, not the only path."
+        padding="pb"
+      />
     </main>
   );
 }

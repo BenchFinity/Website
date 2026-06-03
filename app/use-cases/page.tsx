@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { LinkCard } from "@/components/card";
 import { PageHeader } from "@/components/page-header";
 import { StatusPill } from "@/components/status-pill";
 import { createPageMetadata } from "@/lib/metadata";
@@ -13,7 +13,7 @@ export const metadata = createPageMetadata({
 
 export default function UseCasesPage() {
   return (
-    <main className="bg-bf-bg text-bf-text">
+    <main id="main-content" tabIndex={-1} className="bg-bf-bg text-bf-text">
       <section className="px-6 py-20 sm:px-8 lg:px-12">
         <PageHeader
           eyebrow="Use cases"
@@ -25,11 +25,7 @@ export default function UseCasesPage() {
       <section className="mx-auto max-w-7xl px-6 pb-20 sm:px-8 lg:px-12">
         <div className="grid gap-4 lg:grid-cols-3">
           {featuredUseCases.map((useCase) => (
-            <Link
-              key={useCase.slug}
-              className="border-bf-border bg-bf-surface hover:border-bf-accent block border p-6 transition"
-              href={`/use-cases/${useCase.slug}`}
-            >
+            <LinkCard key={useCase.slug} href={`/use-cases/${useCase.slug}`}>
               <StatusPill tone="roadmap">{useCase.statusLabel}</StatusPill>
               <p className="text-bf-accent-bright mt-6 font-mono text-sm uppercase">
                 {useCase.eyebrow}
@@ -38,7 +34,7 @@ export default function UseCasesPage() {
               <p className="text-bf-text-muted mt-4 leading-7">
                 {useCase.description}
               </p>
-            </Link>
+            </LinkCard>
           ))}
         </div>
       </section>
