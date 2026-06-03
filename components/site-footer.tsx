@@ -15,9 +15,9 @@ export function SiteFooter() {
               href={siteConfig.links.methodology}
               eventProperties={{ destination: "methodology" }}
             >
-              Built in the open by a solo founder with Claude
-            </TrackedLink>
-            . Free and open source, with the Workbench code shipping AGPL-3.0.
+              Built by KofTwentyTwo
+            </TrackedLink>{" "}
+            with the help, foundation, and love of and for open source.
           </p>
         </div>
         <nav aria-label="Footer site links">
