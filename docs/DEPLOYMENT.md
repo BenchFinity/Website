@@ -10,27 +10,34 @@ and ArgoCD reconciles them onto the `k8s-prod` cluster.
 ## Pipeline (code → live)
 
 ```
-push to a branch
+push to main
   → CI (.github/workflows/ci.yml): validate (lint, typecheck, build, e2e, lighthouse, npm audit)
                                    → trivy image scan → build & push image to GHCR
-  → image: ghcr.io/benchfinity/website:<tag>   (PRIVATE package)
-  → (manual) bump newTag in Website-CD overlays/production
-  → ArgoCD syncs Website-CD → rolling deploy on k8s-prod → live
+  → image: ghcr.io/benchfinity/website:<version>-<sha>   (immutable, PRIVATE package)
+  → deploy job auto-bumps newTag in Website-CD/overlays/production (main)
+  → ArgoCD (benchfinity-website-prod) syncs Website-CD → rolling deploy on k8s-prod → live
 ```
 
 ### Image tags by branch
 
-| Branch              | Tag pushed                                                       | Used for           |
-| ------------------- | ---------------------------------------------------------------- | ------------------ |
-| `main`              | clean semver `:<version>` (from `package.json`) + GitHub release | **production**     |
-| `develop`           | `:<version>-SNAPSHOT.<sha>` and `:develop`                       | integration        |
-| `release/*`, `rc/*` | `:<version>-rc.<sha>` (prerelease)                               | release candidates |
-| `feature/*`         | `:<version>-<branch>-<sha>-SNAPSHOT`                             | previews           |
+| Branch              | Tag pushed                                                              | Used for           |
+| ------------------- | ----------------------------------------------------------------------- | ------------------ |
+| `main`              | `:<version>` + immutable `:<version>-<sha>` (deployed) + GitHub release | **production**     |
+| `develop`           | `:<version>-SNAPSHOT.<sha>` and `:develop`                              | integration        |
+| `release/*`, `rc/*` | `:<version>-rc.<sha>` (prerelease)                                      | release candidates |
+| `feature/*`         | `:<version>-<branch>-<sha>-SNAPSHOT`                                    | previews           |
 
-**Cutting a production release:** merge `develop → main`. CI publishes
-`ghcr.io/benchfinity/website:<version>` and a GitHub release. Then bump
-`newTag` in `Website-CD/overlays/production/kustomization.yaml` and merge — ArgoCD
-rolls it out. (CI does not auto-update the CD repo; the tag bump is intentional.)
+**Cutting a production release is fully automated:** merge `develop → main`. CI
+builds, scans, and publishes the immutable `ghcr.io/benchfinity/website:<version>-<sha>`
+image (plus the human-readable `:<version>` and a GitHub release), then the
+`deploy` job auto-bumps `newTag` in `Website-CD/overlays/production/kustomization.yaml`
+on `main` and pushes. ArgoCD auto-syncs and rolls it out — **no manual tag bump**.
+The immutable `:<version>-<sha>` tag guarantees the desired state changes on every
+release so ArgoCD always detects and deploys it.
+
+CI writes to `Website-CD` over SSH using a write-scoped deploy key whose private
+half is stored as the `WEBSITE_CD_DEPLOY_KEY` secret in `BenchFinity/Website`
+(public half is a deploy key on `BenchFinity/Website-CD`).
 
 ## Runtime contract (must hold for the image to run on k8s-prod)
 
