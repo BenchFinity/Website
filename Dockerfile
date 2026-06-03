@@ -27,9 +27,11 @@ COPY --chown=node:node --from=builder /app/.next/standalone ./
 COPY --chown=node:node --from=builder /app/.next/static ./.next/static
 COPY --chown=node:node --from=builder /app/public ./public
 
-# Run as the nonroot 'node' user so the image satisfies the cluster's
-# restricted PodSecurity (runAsNonRoot) without the deployment pinning a UID.
-USER node
+# Run as the nonroot 'node' user (numeric UID) so the image satisfies the
+# cluster's restricted PodSecurity. runAsNonRoot REQUIRES a numeric user — a
+# name ("node") makes k8s reject the pod: "image has non-numeric user (node)".
+# 65532 is the chainguard/node nonroot uid (== the 'node' user).
+USER 65532
 
 EXPOSE 3000
 
