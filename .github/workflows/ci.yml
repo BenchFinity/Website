@@ -250,6 +250,10 @@ jobs:
     # has been published. Bumps the pinned tag in the Website-CD GitOps repo;
     # ArgoCD (benchfinity-website-prod) reconciles it onto k8s-prod.
     if: github.event_name == 'push' && needs.docker.outputs.deploy_tag != ''
+    # Uses the SSH deploy key for Website-CD, not GITHUB_TOKEN — so this job
+    # needs no token write scope. Explicit minimal permissions (CodeQL).
+    permissions:
+      contents: read
     steps:
       - name: Roll production by bumping Website-CD image tag
         env:
