@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Inter_Tight } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { AnalyticsProvider } from "@/components/analytics-provider";
 import { ConsentBanner } from "@/components/consent-banner";
 import { SiteFooter } from "@/components/site-footer";
@@ -16,12 +16,6 @@ const plexSans = IBM_Plex_Sans({
 
 const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const interTight = Inter_Tight({
-  variable: "--font-inter-tight",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -71,9 +65,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${plexSans.variable} ${plexMono.variable} ${interTight.variable} bg-bf-bg h-full antialiased`}
+      className={`${plexSans.variable} ${plexMono.variable} bg-bf-bg h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <a
+          href="#main-content"
+          className="focus:bg-bf-surface focus:text-bf-text sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:px-4 focus:py-2"
+        >
+          Skip to content
+        </a>
         <SiteHeader />
         <div className="flex-1">{children}</div>
         <SiteFooter />

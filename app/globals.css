@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: dark;
   --bf-bg: #0b0d0f;
   --bf-surface: #161b20;
   --bf-surface-2: #1e242b;
   --bf-border: #232a31;
   --bf-accent: #4fa39d;
   --bf-accent-bright: #67c7be;
-  --bf-accent-hover: #67c7be;
   --bf-accent-press: #3e837e;
   --bf-text: #e7ecef;
   --bf-text-muted: #8d98a1;
@@ -27,7 +27,6 @@
   --color-bf-border: var(--bf-border);
   --color-bf-accent: var(--bf-accent);
   --color-bf-accent-bright: var(--bf-accent-bright);
-  --color-bf-accent-hover: var(--bf-accent-hover);
   --color-bf-accent-press: var(--bf-accent-press);
   --color-bf-text: var(--bf-text);
   --color-bf-text-muted: var(--bf-text-muted);
