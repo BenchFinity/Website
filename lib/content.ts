@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { cache } from "react";
 import matter from "gray-matter";
 import { z } from "zod";
 
@@ -15,7 +16,7 @@ const blogFrontmatterSchema = z.object({
     "oss-methodology",
     "vertical-proof",
   ]),
-  date: z.string(),
+  date: z.iso.date(),
   funnelStage: z.enum(["adoption", "contribution", "reputation"]),
   draft: z.boolean().default(false),
 });
@@ -36,7 +37,7 @@ export function getBlogSlugs(): string[] {
     .map((fileName) => fileName.replace(/\.mdx$/, ""));
 }
 
-export function getBlogPost(slug: string): BlogPost | null {
+export const getBlogPost = cache((slug: string): BlogPost | null => {
   const filePath = path.join(blogDirectory, `${slug}.mdx`);
 
   if (!fs.existsSync(filePath)) {
@@ -45,14 +46,21 @@ export function getBlogPost(slug: string): BlogPost | null {
 
   const file = fs.readFileSync(filePath, "utf8");
   const parsed = matter(file);
-  const frontmatter = blogFrontmatterSchema.parse(parsed.data);
+  const result = blogFrontmatterSchema.safeParse(parsed.data);
+
+  if (!result.success) {
+    console.warn(
+      `Skipping blog post "${slug}.mdx": invalid frontmatter. ${z.prettifyError(result.error)}`,
+    );
+    return null;
+  }
 
   return {
-    ...frontmatter,
+    ...result.data,
     slug,
     body: parsed.content,
   };
-}
+});
 
 export function getBlogPosts(): BlogPost[] {
   return getBlogSlugs()

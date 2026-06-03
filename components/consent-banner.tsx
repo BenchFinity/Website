@@ -1,46 +1,36 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   captureAnalyticsEvent,
   dispatchConsentChange,
 } from "@/components/analytics-provider";
-import { consentSettingsEvent } from "@/components/consent-settings-button";
 import {
-  consentStorageKey,
+  consentSettingsCloseEvent,
+  consentSettingsEvent,
+} from "@/components/consent-settings-button";
+import {
   isAnalyticsConfigured,
   recordConsent,
   type ConsentChoice,
 } from "@/lib/analytics";
-
-type ConsentSnapshot = ConsentChoice | "unset" | "unknown";
-
-function readConsent(): ConsentSnapshot {
-  if (typeof window === "undefined") {
-    return "unknown";
-  }
-
-  const stored = window.localStorage.getItem(consentStorageKey);
-  return stored === "accepted" || stored === "rejected" ? stored : "unset";
-}
-
-function subscribe(callback: () => void) {
-  window.addEventListener("storage", callback);
-  window.addEventListener("benchfinity-consent-change", callback);
-
-  return () => {
-    window.removeEventListener("storage", callback);
-    window.removeEventListener("benchfinity-consent-change", callback);
-  };
-}
+import { readConsent, subscribe } from "@/lib/consent";
 
 export function ConsentBanner() {
   const choice = useSyncExternalStore(subscribe, readConsent, () => "unknown");
   const [showDetails, setShowDetails] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     function openSettings() {
+      // Capture the element that triggered the settings view (e.g. the footer
+      // "Cookie settings" button) so focus can be restored on Close.
+      triggerRef.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
       setShowDetails(true);
       setSettingsOpen(true);
     }
@@ -49,14 +39,32 @@ export function ConsentBanner() {
     return () => window.removeEventListener(consentSettingsEvent, openSettings);
   }, []);
 
+  // When the settings view opens via the footer event, move focus into the
+  // banner so keyboard and screen-reader users land on the dialog content.
+  useEffect(() => {
+    if (settingsOpen) {
+      headingRef.current?.focus();
+    }
+  }, [settingsOpen]);
+
   if (choice !== "unset" && !settingsOpen) {
     return null;
+  }
+
+  function closeSettings() {
+    setSettingsOpen(false);
+    window.dispatchEvent(new Event(consentSettingsCloseEvent));
+    // Restore focus to the triggering element (the footer button).
+    triggerRef.current?.focus();
+    triggerRef.current = null;
   }
 
   function choose(nextChoice: ConsentChoice) {
     recordConsent(nextChoice);
     dispatchConsentChange();
     setSettingsOpen(false);
+    window.dispatchEvent(new Event(consentSettingsCloseEvent));
+    triggerRef.current = null;
     void captureAnalyticsEvent("consent_updated", {
       consent: nextChoice,
     });
@@ -66,10 +74,20 @@ export function ConsentBanner() {
     <section
       aria-label="Cookie consent"
       className="border-bf-border bg-bf-surface fixed right-4 bottom-4 left-4 z-50 border p-4 shadow-2xl sm:left-auto sm:max-w-xl"
+      onKeyDown={(keyboardEvent) => {
+        if (keyboardEvent.key === "Escape" && settingsOpen) {
+          keyboardEvent.stopPropagation();
+          closeSettings();
+        }
+      }}
     >
       <div className="flex flex-col gap-4">
         <div>
-          <h2 className="text-bf-text text-base font-semibold">
+          <h2
+            ref={headingRef}
+            tabIndex={-1}
+            className="text-bf-text text-base font-semibold focus:outline-none"
+          >
             Analytics consent
           </h2>
           <p className="text-bf-text-muted mt-2 text-sm leading-6">
@@ -127,7 +145,7 @@ export function ConsentBanner() {
             <button
               className="text-bf-text-muted hover:text-bf-accent-bright min-h-11 px-2 text-sm font-semibold underline"
               type="button"
-              onClick={() => setSettingsOpen(false)}
+              onClick={closeSettings}
             >
               Close
             </button>

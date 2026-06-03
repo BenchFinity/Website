@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { LinkCard } from "@/components/card";
 import { PageHeader } from "@/components/page-header";
 import { StatusPill } from "@/components/status-pill";
 import { getBlogPosts } from "@/lib/content";
@@ -15,7 +15,7 @@ export default function BlogPage() {
   const posts = getBlogPosts();
 
   return (
-    <main className="bg-bf-bg text-bf-text">
+    <main id="main-content" tabIndex={-1} className="bg-bf-bg text-bf-text">
       <section className="px-6 py-20 sm:px-8 lg:px-12">
         <PageHeader
           eyebrow="Blog"
@@ -27,11 +27,7 @@ export default function BlogPage() {
       <section className="mx-auto max-w-5xl px-6 pb-20 sm:px-8 lg:px-12">
         <div className="grid gap-4">
           {posts.map((post) => (
-            <Link
-              key={post.slug}
-              className="border-bf-border bg-bf-surface hover:border-bf-accent block border p-6 transition"
-              href={`/blog/${post.slug}`}
-            >
+            <LinkCard key={post.slug} href={`/blog/${post.slug}`}>
               <div className="flex flex-wrap items-center gap-3">
                 <StatusPill tone="neutral">{post.pillar}</StatusPill>
                 <span className="text-bf-text-muted font-mono text-sm">
@@ -42,7 +38,7 @@ export default function BlogPage() {
               <p className="text-bf-text-muted mt-4 leading-7">
                 {post.description}
               </p>
-            </Link>
+            </LinkCard>
           ))}
         </div>
       </section>

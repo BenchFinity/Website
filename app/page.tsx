@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { LinkCard } from "@/components/card";
+import { ClosingCta } from "@/components/closing-cta";
 import { CtaRow } from "@/components/cta-row";
 import { HonestState } from "@/components/honest-state";
 import { StatusPill } from "@/components/status-pill";
@@ -15,14 +17,18 @@ const workflow = [
 
 export default function Home() {
   return (
-    <main className="bg-bf-bg text-bf-text overflow-hidden">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="bg-bf-bg text-bf-text overflow-hidden"
+    >
       <section className="relative isolate">
         <div
           className="absolute inset-0 -z-10 hidden opacity-20 lg:block"
           style={{
             backgroundImage: "url('/media/wallpapers/baseplate-1280x720.webp')",
-            backgroundPosition: "center",
             backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
         />
         <div className="mx-auto grid min-h-[calc(100svh-5rem)] max-w-7xl items-center gap-12 px-6 py-14 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:px-12">
@@ -38,9 +44,9 @@ export default function Home() {
               {siteConfig.description}
             </p>
             <p className="text-bf-text-muted mt-4 max-w-2xl text-sm leading-6">
-              Workbench ships the baseplate foundation today. Accounts,
-              collection capture, bins, dividers, foam, wall mounts, and
-              whole-system generation stay labeled roadmap until they ship.
+              Generate Gridfinity baseplates in your browser today. Whole-system
+              orchestration — capture, bins, dividers, foam, and wall mounts —
+              is on the public roadmap.
             </p>
             <div className="mt-10">
               <CtaRow includeExamples />
@@ -123,11 +129,7 @@ export default function Home() {
         </div>
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {featuredUseCases.map((useCase) => (
-            <Link
-              key={useCase.slug}
-              className="border-bf-border bg-bf-surface hover:border-bf-accent block border p-6 transition"
-              href={`/use-cases/${useCase.slug}`}
-            >
+            <LinkCard key={useCase.slug} href={`/use-cases/${useCase.slug}`}>
               <p className="text-bf-accent-bright font-mono text-sm uppercase">
                 {useCase.eyebrow}
               </p>
@@ -135,7 +137,7 @@ export default function Home() {
               <p className="text-bf-text-muted mt-4 text-sm leading-6">
                 {useCase.description}
               </p>
-            </Link>
+            </LinkCard>
           ))}
         </div>
       </section>
@@ -163,20 +165,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-6 py-20 text-center sm:px-8 lg:px-12">
-        <StatusPill tone="neutral">Always free</StatusPill>
-        <h2 className="mt-6 text-3xl font-semibold sm:text-4xl">
-          Build now. Join the roadmap when you are ready.
-        </h2>
-        <p className="text-bf-text-muted mx-auto mt-5 max-w-2xl leading-7">
-          The first CTA goes to the live browser generator. The second keeps its
-          account wording, then routes to notification and community until
-          accounts ship.
-        </p>
-        <div className="mt-8">
-          <CtaRow align="center" />
-        </div>
-      </section>
+      <ClosingCta
+        statusPill="Always free"
+        heading="Build now. Join the roadmap when you are ready."
+        body="Start generating Gridfinity baseplates in your browser today. Join the Discord to follow whole-system orchestration as it ships."
+      />
     </main>
   );
 }

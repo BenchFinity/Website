@@ -22,7 +22,7 @@ test("renders the Benchfinity home page with the locked headline", async ({
   await expect(
     page
       .getByRole("link", {
-        name: "Create an account and build entire systems",
+        name: "Join the build-in-public Discord",
       })
       .first(),
   ).toBeVisible();

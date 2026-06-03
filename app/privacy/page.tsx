@@ -1,7 +1,10 @@
+import { Card } from "@/components/card";
 import { PageHeader } from "@/components/page-header";
 import { StatusPill } from "@/components/status-pill";
 import { createPageMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/lib/site";
+
+const LAST_UPDATED = "May 30, 2026";
 
 export const metadata = createPageMetadata({
   title: "Privacy",
@@ -34,27 +37,31 @@ const dataRows = [
 
 export default function PrivacyPage() {
   return (
-    <main className="bg-bf-bg text-bf-text">
+    <main id="main-content" tabIndex={-1} className="bg-bf-bg text-bf-text">
       <section className="px-6 py-20 sm:px-8 lg:px-12">
         <PageHeader
           eyebrow="Privacy"
           title="Measured honestly, with consent."
           description="Benchfinity uses self-hosted analytics to understand adoption. The policy is explicit because the site measures the funnel instead of pretending it does not."
         />
+        <p className="text-bf-text-muted mx-auto mt-6 max-w-3xl text-center font-mono text-sm">
+          Last updated: {LAST_UPDATED}
+        </p>
       </section>
 
       <section className="mx-auto max-w-5xl px-6 pb-20 sm:px-8 lg:px-12">
         <div className="grid gap-4">
           {dataRows.map(([label, detail]) => (
-            <article
+            <Card
               key={label}
-              className="border-bf-border bg-bf-surface grid gap-4 border p-5 md:grid-cols-[12rem_1fr]"
+              padding="sm"
+              className="grid gap-4 md:grid-cols-[12rem_1fr]"
             >
               <h2 className="text-bf-text font-mono text-sm uppercase">
                 {label}
               </h2>
               <p className="text-bf-text-muted leading-7">{detail}</p>
-            </article>
+            </Card>
           ))}
         </div>
       </section>

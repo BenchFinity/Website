@@ -1,42 +1,25 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import type { PostHog } from "posthog-js";
 import {
   analyticsConfig,
-  consentStorageKey,
   isAnalyticsConfigured,
   type AnalyticsEventName,
   type AnalyticsEventProperties,
 } from "@/lib/analytics";
+import {
+  consentChangeEvent,
+  readConsent,
+  subscribe,
+  type ConsentSnapshot,
+} from "@/lib/consent";
 
-type ConsentSnapshot = "accepted" | "rejected" | "unset" | "unknown";
 type PostHogClient = PostHog;
-
-const consentChangeEvent = "benchfinity-consent-change";
 
 let posthogClient: PostHogClient | null = null;
 let initPromise: Promise<PostHogClient | null> | null = null;
-
-function readConsent(): ConsentSnapshot {
-  if (typeof window === "undefined") {
-    return "unknown";
-  }
-
-  const stored = window.localStorage.getItem(consentStorageKey);
-  return stored === "accepted" || stored === "rejected" ? stored : "unset";
-}
-
-function subscribe(callback: () => void) {
-  window.addEventListener("storage", callback);
-  window.addEventListener(consentChangeEvent, callback);
-
-  return () => {
-    window.removeEventListener("storage", callback);
-    window.removeEventListener(consentChangeEvent, callback);
-  };
-}
 
 async function getPostHogClient() {
   const { posthogHost, posthogKey } = analyticsConfig;
@@ -85,7 +68,12 @@ export function dispatchConsentChange() {
 
 export function AnalyticsProvider() {
   const pathname = usePathname();
-  const consent = useSyncExternalStore(subscribe, readConsent, () => "unknown");
+  const consent = useSyncExternalStore<ConsentSnapshot>(
+    subscribe,
+    readConsent,
+    () => "unknown",
+  );
+  const previousConsent = useRef<ConsentSnapshot>(consent);
 
   useEffect(() => {
     if (consent === "accepted") {
@@ -99,12 +87,30 @@ export function AnalyticsProvider() {
     }
   }, [consent]);
 
+  // Fire page_viewed on navigation (pathname change). captureAnalyticsEvent
+  // is gated on accepted consent, so this no-ops until the user opts in.
   useEffect(() => {
     void captureAnalyticsEvent("page_viewed", {
       path: pathname,
       url: typeof window === "undefined" ? null : window.location.href,
     });
-  }, [pathname, consent]);
+  }, [pathname]);
+
+  // Backfill the current page_viewed exactly once on the genuine transition
+  // into "accepted" (e.g. unset/rejected -> accepted). Tracking the previous
+  // consent in a ref prevents re-firing on repeated consent toggles for the
+  // same path.
+  useEffect(() => {
+    const wasAccepted = previousConsent.current === "accepted";
+    previousConsent.current = consent;
+
+    if (consent === "accepted" && !wasAccepted) {
+      void captureAnalyticsEvent("page_viewed", {
+        path: pathname,
+        url: typeof window === "undefined" ? null : window.location.href,
+      });
+    }
+  }, [consent, pathname]);
 
   return null;
 }

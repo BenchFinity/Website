@@ -33,11 +33,11 @@ export function CtaRow({
         href={siteConfig.notifyUrl}
         event="cta_clicked"
         eventProperties={{
-          cta: "create_account_systems",
+          cta: "join_discord",
           destination: siteConfig.notifyUrl,
         }}
       >
-        Create an account and build entire systems
+        Join the build-in-public Discord
       </TrackedLink>
       {includeExamples ? (
         <Link

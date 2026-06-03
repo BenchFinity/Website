@@ -1,7 +1,10 @@
+import { Card } from "@/components/card";
 import { ConsentSettingsButton } from "@/components/consent-settings-button";
 import { PageHeader } from "@/components/page-header";
 import { StatusPill } from "@/components/status-pill";
 import { createPageMetadata } from "@/lib/metadata";
+
+const LAST_UPDATED = "May 30, 2026";
 
 export const metadata = createPageMetadata({
   title: "Cookie Policy",
@@ -30,13 +33,16 @@ const cookieCategories = [
 
 export default function CookiesPage() {
   return (
-    <main className="bg-bf-bg text-bf-text">
+    <main id="main-content" tabIndex={-1} className="bg-bf-bg text-bf-text">
       <section className="px-6 py-20 sm:px-8 lg:px-12">
         <PageHeader
           eyebrow="Cookie policy"
           title="Reject genuinely works."
           description="Benchfinity ships with a consent surface from v1 because analytics are part of the launch posture. The controls must stay plain and reversible."
         />
+        <p className="text-bf-text-muted mx-auto mt-6 max-w-3xl text-center font-mono text-sm">
+          Last updated: {LAST_UPDATED}
+        </p>
         <div className="mx-auto mt-8 max-w-3xl">
           <ConsentSettingsButton className="border-bf-border bg-bf-surface text-bf-text hover:border-bf-accent inline-flex min-h-11 items-center justify-center border px-4 text-sm font-semibold transition" />
         </div>
@@ -45,16 +51,13 @@ export default function CookiesPage() {
       <section className="mx-auto max-w-5xl px-6 pb-20 sm:px-8 lg:px-12">
         <div className="grid gap-4 md:grid-cols-3">
           {cookieCategories.map((category) => (
-            <article
-              key={category.title}
-              className="border-bf-border bg-bf-surface border p-6"
-            >
+            <Card key={category.title}>
               <StatusPill tone="neutral">{category.status}</StatusPill>
               <h2 className="mt-5 text-2xl font-semibold">{category.title}</h2>
               <p className="text-bf-text-muted mt-4 leading-7">
                 {category.body}
               </p>
-            </article>
+            </Card>
           ))}
         </div>
       </section>
