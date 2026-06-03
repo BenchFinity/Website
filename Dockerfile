@@ -16,7 +16,7 @@ COPY --chown=node:node --from=deps /app/node_modules ./node_modules
 COPY --chown=node:node . .
 RUN npm run build
 
-FROM cgr.dev/chainguard/node:latest-dev@sha256:5f539ca9ce7ed8b858059b3316640232bcb1ae7d3513ae67bb95527533bf1fba AS runner
+FROM cgr.dev/chainguard/node@sha256:045335a479d6c59bab89e3caaaf9ed2aed5528d92e2431a3e2afcbf258dba9a6 AS runner
 ENV HOSTNAME=0.0.0.0
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -29,7 +29,6 @@ COPY --chown=node:node --from=builder /app/public ./public
 
 # Run as the nonroot 'node' user so the image satisfies the cluster's
 # restricted PodSecurity (runAsNonRoot) without the deployment pinning a UID.
-# The -dev base image otherwise defaults to root.
 USER node
 
 EXPOSE 3000
