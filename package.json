@@ -20,13 +20,13 @@
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
-    "next": "16.2.6",
-    "next-mdx-remote-client": "^2.1.11",
-    "posthog-js": "^1.376.4",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "rehype-pretty-code": "^0.14.3",
-    "shiki": "^4.1.0",
+    "next": "16.3.0",
+    "next-mdx-remote-client": "^2.1.12",
+    "posthog-js": "^1.417.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "rehype-pretty-code": "^0.14.5",
+    "shiki": "^4.4.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
