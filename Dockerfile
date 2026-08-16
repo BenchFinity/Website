@@ -16,7 +16,7 @@ COPY --chown=node:node --from=deps /app/node_modules ./node_modules
 COPY --chown=node:node . .
 RUN npm run build
 
-FROM cgr.dev/chainguard/node@sha256:045335a479d6c59bab89e3caaaf9ed2aed5528d92e2431a3e2afcbf258dba9a6 AS runner
+FROM cgr.dev/chainguard/node@sha256:f6c05914c890eb9a36836503015b21a38f54eca322b5de9a3ef475b32d7f4172 AS runner
 ENV HOSTNAME=0.0.0.0
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
