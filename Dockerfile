@@ -1,14 +1,14 @@
 # glibc Node toolchain, nonroot user, digest-pinned to match Workbench's
 # Chainguard base-image posture. Next SSR needs Node in the final image, so this
 # uses the Node runtime instead of Workbench's static nginx runtime.
-FROM cgr.dev/chainguard/node:latest-dev@sha256:5f539ca9ce7ed8b858059b3316640232bcb1ae7d3513ae67bb95527533bf1fba AS deps
+FROM cgr.dev/chainguard/node:latest-dev@sha256:4cd2bedce5955f933c8dca76df9bdff301505f3d0994c1e7e829a01e1718e650 AS deps
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm ci
 
-FROM cgr.dev/chainguard/node:latest-dev@sha256:5f539ca9ce7ed8b858059b3316640232bcb1ae7d3513ae67bb95527533bf1fba AS builder
+FROM cgr.dev/chainguard/node:latest-dev@sha256:4cd2bedce5955f933c8dca76df9bdff301505f3d0994c1e7e829a01e1718e650 AS builder
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
@@ -16,7 +16,7 @@ COPY --chown=node:node --from=deps /app/node_modules ./node_modules
 COPY --chown=node:node . .
 RUN npm run build
 
-FROM cgr.dev/chainguard/node@sha256:045335a479d6c59bab89e3caaaf9ed2aed5528d92e2431a3e2afcbf258dba9a6 AS runner
+FROM cgr.dev/chainguard/node@sha256:a422ef283675c760d801378646f2a7fdc96f4e2023121a247e215ed3cd39f199 AS runner
 ENV HOSTNAME=0.0.0.0
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
